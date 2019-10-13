@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    image: node:latest
+    build: ./mongodb_service
+    ports:
+    - "4000:4000"
+    depends_on:
+    - mongo
+    command: npm start 
+  mongo:
+    image: mongo
+    expose:
+    - 27017
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=user
+    - MONGO_INITDB_ROOT_PASSWORD=password

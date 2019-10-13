@@ -1,0 +1,14 @@
+{
+  "name": "mysql_user_service",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "Jacob Goldverg <jgoldverg@gmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.3.2"
+  }
+}
