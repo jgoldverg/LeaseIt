@@ -1,5 +1,5 @@
 {
-  "name": "mysql_user_service",
+  "name": "mongodb_user_service",
   "version": "1.0.0",
   "description": "Node.js on Docker",
   "author": "Jacob Goldverg <jgoldverg@gmail.com>",
