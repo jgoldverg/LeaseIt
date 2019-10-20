@@ -3,7 +3,6 @@ services:
   
   #mongodb set up
   web:
-    image: node
     build: ./mongodb_service
     container_name: web_mongodb_service
     ports:
