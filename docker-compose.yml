@@ -3,8 +3,11 @@ services:
   
   #mongodb set up
   web:
-    image: node:latest
+    image: node
     build: ./mongodb_service
+    container_name: web_mongodb_service
+    ports:
+    - 4000:4000
     depends_on:
     - mongodb
 
@@ -14,8 +17,8 @@ services:
     - '27017'
 
   web_postgres:
-    image: node:latest
     build: ./postgres_service
+    container_name: web_postgresdb_service
     ports:
       - "3000:3000"
     depends_on:
@@ -34,7 +37,7 @@ services:
       - PGUSER=user
       - PGPASSWORD=1234
       - PGPORT=5432
-      - PGDATABASE=mydb
+      - PGDATABASE=customerdirectory
 #   Maps port 54320 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
     ports:
       - "54320:5432"

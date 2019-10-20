@@ -7,10 +7,13 @@ const app = express();
 
 MongoClient.connect("mongodb://mongodb:27017", function(err, db) {
   if(err) throw err;
-  console.log("NoSQL Database created!")
   db.close()
 })
 
 app.get("/", (req, res) => {
   res.send("Hello from Node.js app \n");
 });
+
+app.listen('4000', () =>{
+  console.log("I hate this damn thingy sometimes")
+})
