@@ -1,7 +1,14 @@
 version: "3"
 services:
-  #mongodb set up
-  web:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "7080:7080"
+    expose: 
+      - "7080"
+      
+  #mongo service need to fix names
+  mongo_service:
     build: ./mongodb_service
     container_name: web_mongodb_service
     ports:
@@ -18,7 +25,7 @@ services:
     volumes:
       - ./mongodb_volume:/var/lib/mongodb/data
 
-  login_service:
+  postgres_service:
     build: ./postgres_service
     container_name: login_service_node
     ports:
