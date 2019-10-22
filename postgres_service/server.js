@@ -3,17 +3,15 @@ const { Pool, Client } = require('pg')
 const app = express()
 // pools will use environment variables
 // for connection information
-const pool = new Pool({
-  user: 'user',
-  host: 'localhost',
-  database: 'customerdirectory',
-  password: '1234',
-  port: 5432,
-})
+const connectionString = process.env.DB_URL
 
+const pool = new Pool({
+  connectionString: connectionString,
+})
 pool.query('SELECT NOW()', (err, res) => {
   console.log(err, res)
   pool.end()
+  process.exit(1)
 })
 
 app.get("/hello", (req, res) => {
@@ -21,7 +19,7 @@ app.get("/hello", (req, res) => {
 });
 
 app.listen('3000', () =>{
-  console.log("I hate this damn thingy sometimes")
+  console.log("Postgres sucks!")
 })
 
 /*

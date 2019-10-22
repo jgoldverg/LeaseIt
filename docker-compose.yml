@@ -1,32 +1,36 @@
-version: '3'
+version: "3"
 services:
-  
   #mongodb set up
   web:
-    image: node
     build: ./mongodb_service
     container_name: web_mongodb_service
     ports:
-    - 4000:4000
+      - 4000:4000
     depends_on:
-    - mongodb
+      - mongodb
+    environment: 
+      DB_URL: mongodb://mongodb:27017
 
   mongodb:
     image: mongo
     expose:
-    - '27017'
+      - "27017"
+    volumes:
+      - ./mongodb_volume:/var/lib/mongodb/data
 
-  web_postgres:
+  login_service:
     build: ./postgres_service
-    container_name: web_postgresdb_service
+    container_name: login_service_node
     ports:
       - "3000:3000"
+    environment:
+       - DB_URL=postgres://user:1234@postgresdb:5432/customerdirectory
     depends_on:
-    - postgresdb
-  
+      - postgresdb
+
   #postgres db definition the env vars should be put in a properties file and passed to it somehow
   postgresdb:
-    image: postgres
+    image: postgres:10.4
     #the health check confirms that the db is ready to accept connections and not just the container
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -34,10 +38,13 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      - PGUSER=user
-      - PGPASSWORD=1234
-      - PGPORT=5432
-      - PGDATABASE=customerdirectory
-#   Maps port 54320 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
+      - PGDATA=/var/lib/postgresql/data/db-files/
+      - POSTGRES_USER=user
+      - POSTGRES_HOST=host.docker.internal
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=customerdirectory
+    #   Maps port 54320 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
     ports:
-      - "54320:5432"
+      - "35432:5432"
+    volumes:
+      - ./postgres_volume:/var/lib/postgresql/data
