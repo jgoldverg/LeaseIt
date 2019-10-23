@@ -11,7 +11,6 @@ const pool = new Pool({
 pool.query('SELECT NOW()', (err, res) => {
   console.log(err, res)
   pool.end()
-  process.exit(1)
 })
 
 app.get("/hello", (req, res) => {
