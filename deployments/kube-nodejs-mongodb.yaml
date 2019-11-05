@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-node-service
+spec:
+  selector:
+    app: mongodb-node-service
+  ports:
+    - port: 4000
+      targetPort: 4000
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media-service-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mongdb-webservice
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mongdb-webservice
+    spec:
+      containers:
+        - image: gold96tendy/leaseit_media-service:0.0.1
+          name: node-mongo-alpine
+          ports:
+            - containerPort: 4000
+          env:
+            - name: MONGO_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: mongo_db_url

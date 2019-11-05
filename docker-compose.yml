@@ -1,40 +1,31 @@
 version: "3"
 services:
-  api-gateway:
-    build: ./api-gateway
-    ports:
-      - "7080:7080"
-    expose: 
-      - "7080"
-      
   #mongo service need to fix names
-  mongo_service:
+  mongo-service:
     build: ./mongodb_service
-    container_name: web_mongodb_service
+    container_name: web-mongodb-service
     ports:
       - 4000:4000
     depends_on:
       - mongodb
     environment: 
-      DB_URL: mongodb://mongodb:27017
-
+      MONGO_DB_URL: mongodb://mongodb:27017
   mongodb:
-    image: mongo
+    image: mongo:3.6.15-xenial
+    container_name: media-data-store
     expose:
       - "27017"
     volumes:
       - ./mongodb_volume:/var/lib/mongodb/data
-
-  postgres_service:
+  postgres-service:
     build: ./postgres_service
-    container_name: login_service_node
+    container_name: login-service-node
     ports:
       - "3000:3000"
     environment:
-       - DB_URL=postgres://user:1234@postgresdb:5432/customerdirectory
+       - DB_POSTGRES_URL=postgres://user:1234@postgresdb:5432/customerdirectory
     depends_on:
       - postgresdb
-
   #postgres db definition the env vars should be put in a properties file and passed to it somehow
   postgresdb:
     image: postgres:10.4
@@ -52,6 +43,6 @@ services:
       - POSTGRES_DB=customerdirectory
     #   Maps port 54320 (localhost) to port 5432 on the container. You can change the ports to fix your needs.
     ports:
-      - "35432:5432"
+      - "54320:5432"
     volumes:
       - ./postgres_volume:/var/lib/postgresql/data
