@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: media-mongodb-service
+  namespace: media-db
+spec:
+  selector:
+    app: media-mongodb
+  ports:
+    - port: 27017
+      targetPort: 27016
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-mongodb-pv-claim
+  namespace: media-db
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: media-mongodb-deployment
+  namespace: media-db
+spec:
+  selector:
+    matchLabels:
+      app: media-mongodb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: media-mongodb
+    spec:
+      containers:
+        - image: mongo:alpine
+          name: mongodb
+          ports:
+            - containerPort: 27017
+      volumes:
+        - name: media-persistent-storage
+          persistentVolumeClaim:
+            claimName: media-mongodb-pv-claim
