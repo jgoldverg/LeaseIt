@@ -1,13 +1,7 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: mongodb-node
----
-apiVersion: v1
 kind: Service
 metadata:
   name: mongodb-node-service
-  namespace: mongodb-node
 spec:
   selector:
     app: mongodb-node-service
@@ -19,8 +13,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-mongodb-querier
-  namespace: mongodb-node
+  name: media-service-deployment
 spec:
   selector:
     matchLabels:
@@ -33,7 +26,7 @@ spec:
         app: mongdb-webservice
     spec:
       containers:
-        - image: gold96tendy/leaseit:mongo-service_alpine
+        - image: gold96tendy/leaseit_media-service:0.0.1
           name: node-mongo-alpine
           ports:
             - containerPort: 4000
@@ -43,4 +36,3 @@ spec:
                 secretKeyRef:
                   name: database-secret
                   key: mongo_db_url
-

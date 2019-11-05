@@ -1,13 +1,8 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: user-db
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: media-postgres-service
-  namespace: user-db
+  name: user-postgres-service
 spec:
   selector:
     app: user-postgresdb
@@ -20,7 +15,6 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: user-postgres-pv-claim
-  namespace: user-db
 spec:
   storageClassName: manual
   accessModes:
@@ -32,8 +26,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-postgres-deployment
-  namespace: user-db
+  name: user-postgres-alpine
 spec:
   selector:
     matchLabels:
@@ -49,11 +42,26 @@ spec:
         - image: postgres:alpine
           name: postgresdb
           env:
-            - name: DB_POSTGRES_URL
+            - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: database-secrets
+                  name: database-secret
+                  key: postgres_user
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
                   key: postgres_db_url
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: postgres_db
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: database-secret
+                  key: postgres_password
           ports:
             - containerPort: 27017
       volumes:
