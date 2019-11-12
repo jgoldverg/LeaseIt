@@ -7,9 +7,8 @@ spec:
   selector:
     app: user-postgresdb
   ports:
-    - port: 35432
-      targetPort: 3542
-  clusterIP: None
+    - port: 5432
+      targetPort: 5432
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -47,11 +46,6 @@ spec:
                 secretKeyRef:
                   name: database-secret
                   key: postgres_user
-            - name: POSTGRES_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: database-secret
-                  key: postgres_db_url
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
@@ -62,8 +56,6 @@ spec:
                 secretKeyRef:
                   name: database-secret
                   key: postgres_password
-          ports:
-            - containerPort: 27017
       volumes:
         - name: user-persistent-storage
           persistentVolumeClaim:
