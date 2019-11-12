@@ -4,7 +4,7 @@ metadata:
   name: postgresdb-node-service
 spec:
   selector:
-    app: postgresdb-node-service
+    app: postgresdb-webservice
   ports:
     - port: 3000
       targetPort: 3000
@@ -36,5 +36,6 @@ spec:
                 secretKeyRef:
                   name: database-secret
                   key: postgres_db_url
+
 
 
