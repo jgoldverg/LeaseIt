@@ -1,7 +1,8 @@
-const express = require("express");
+const express = require("express")
 const { Pool, Client } = require('pg')
 const parser = require('body-parser')
 const app = express()
+const user = require('User');
 
 
 const pool = new Pool({
@@ -35,8 +36,8 @@ app.get('/login', function(req, res){
 })
 
 app.get("/hello", (req, res) => {
-  res.send("Hello from Node.js app \n");
-});
+  res.send("Hello from Node.js app \n")
+})
 
 app.listen('3000', () =>{
   console.log("Postgres sucks!")

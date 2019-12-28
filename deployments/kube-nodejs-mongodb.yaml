@@ -4,16 +4,19 @@ metadata:
   name: mongodb-node-service
 spec:
   selector:
-    app: mongodb-node-service
+    app: mongdb-webservice
   ports:
     - port: 4000
+      name: http
       targetPort: 4000
   clusterIP: None
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: media-service-deployment
+  name: mongdb-webservice
+  labels:
+    version: v1
 spec:
   selector:
     matchLabels:
@@ -24,6 +27,7 @@ spec:
     metadata:
       labels:
         app: mongdb-webservice
+        version: v1
     spec:
       containers:
         - image: gold96tendy/leaseit_media-service:0.0.1

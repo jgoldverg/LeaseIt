@@ -7,13 +7,16 @@ spec:
     app: postgresdb-webservice
   ports:
     - port: 3000
+      name: http
       targetPort: 3000
   clusterIP: None
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service-deployment
+  name: postgresdb-webservice
+  labels:
+    version: v1
 spec:
   selector:
     matchLabels:
@@ -24,6 +27,7 @@ spec:
     metadata:
       labels:
         app: postgresdb-webservice
+        version: v1
     spec:
       containers:
         - image: gold96tendy/leaseit_user-service:0.0.1
